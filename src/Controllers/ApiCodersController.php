@@ -17,6 +17,7 @@ class ApiCodersController
         // }
 
         if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "store")) {
+            $data = $_POST;
             $this->store($_POST);
             return;
         }
@@ -63,17 +64,12 @@ class ApiCodersController
 
     }
 
-    public function create(): void
-    {
-        new View("CreateCoder");
-    }
-
     public function store(array $request): void
     {
         $newCoder = new Coder($request["name"], $request["subject"]);
         $newCoder->save();
 
-        $this->index();
+        echo json_encode($newCoder);
     }
 
     public function delete($id)
@@ -95,7 +91,9 @@ class ApiCodersController
     public function edit($id)
     {
         $coderToEdit = Coder::findById($id);
-        new View("EditCoder", ["coder" => $coderToEdit]);
+
+        
+        // new View("EditCoder", ["coder" => $coderToEdit]);
     }
 
     public function update(array $request, $id)
