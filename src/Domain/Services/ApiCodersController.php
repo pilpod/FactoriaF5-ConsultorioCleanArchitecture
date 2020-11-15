@@ -3,9 +3,11 @@
 namespace App\Domain\Services;
 
 use App\Domain\Models\Coder;
+use App\Domain\Models\Logger;
+use App\Domain\Contracts\IWriteInFiles;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
-class ApiCodersController
+class ApiCodersController implements IWriteInFiles
 {
 
     public function __construct()
@@ -60,6 +62,8 @@ class ApiCodersController
 
         echo json_encode($coderList);
 
+        $this->WriteInLoggerFile('Página home visitada');
+
     }
 
     public function store(array $request): void
@@ -77,6 +81,9 @@ class ApiCodersController
         ];
         
         echo json_encode($lastCoder);
+
+        $this->WriteInLoggerFile('El coder con id: '.$lastCoder['id'].' ha sido guardado');
+
     }
 
     public function delete($id)
@@ -93,6 +100,9 @@ class ApiCodersController
         echo json_encode($coderDeleted);
 
         $coderToDelete->delete();
+
+        $this->WriteInLoggerFile('Suprimido el coder con la siguiente id: '.$id);
+
     }
     
     public function edit($id)
@@ -106,6 +116,8 @@ class ApiCodersController
         ];
 
         echo json_encode($coderData);
+
+        $this->WriteInLoggerFile('Intentando modificar el coder número '.$id.' de la base de datos.');
     }
 
     public function update(array $request, $id)
@@ -115,5 +127,13 @@ class ApiCodersController
         $coderToUpdate->editSubject($request["subject"]);
         $coderToUpdate->update();
 
+        $this->WriteInLoggerFile('El coder '.$id.' ha sido modificado');
+
+    }
+
+    public function WriteInLoggerFile($message)
+    {
+        $logger = new Logger();
+        $logger->WriteFile($message);
     }
 }
