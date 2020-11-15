@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Models;
+namespace App\Domain\Models;
 
 
-use App\Database;
+use App\Infrastructure\DB\Database;
 
 class Coder
 {
@@ -92,6 +92,14 @@ class Coder
         $query = $database->mysql->query("SELECT * FROM `students_db` WHERE `id` = {$id}");
         $result = $query->fetchAll();
 
+        return new self($result[0]["name"], $result[0]["subject"], $result[0]["id"], $result[0]["created_at"]);
+    }
+
+    public static function findLastCoder(): Coder
+    {
+        $database = new Database();
+        $query = $database->mysql->query("SELECT * FROM `students_db` WHERE id=(SELECT max(id) FROM `students_db`)");
+        $result = $query->fetchAll();
         return new self($result[0]["name"], $result[0]["subject"], $result[0]["id"], $result[0]["created_at"]);
     }
 

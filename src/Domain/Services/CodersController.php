@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Domain\Services;
 
-use App\Core\View;
-use App\Models\Coder;
+// use App\Core\View;
+use App\Domain\Models\Coder;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
-class ApiCodersController
+class CodersController
 {
 
     public function __construct()
     {
-        // if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "create")) {
-        //     $this->create();
-        //     return;
-        // }
+        if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "create")) {
+            $this->create();
+            return;
+        }
 
         if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "store")) {
-            $data = $_POST;
             $this->store($_POST);
             return;
         }
@@ -46,22 +45,14 @@ class ApiCodersController
     {
         $codersList = Coder::all();
 
-        $coderList = [];
+        new View("CoderList", [
+            "students_db" => $codersList,
+        ]);
+    }
 
-        foreach ($codersList as $coder) {
-            // print("<pre>".print_r($coder,true)."</pre>");
-            $newCoderList = [
-                "id" => $coder->getId(),
-                "name" => $coder->getName(),
-                "subject" => $coder->getSubject(),
-                "created" => $coder->getCreatedAt(),
-            ];
-
-            array_push($coderList, $newCoderList);
-         }
-
-        echo json_encode($coderList);
-
+    public function create(): void
+    {
+        new View("CreateCoder");
     }
 
     public function store(array $request): void
@@ -69,31 +60,21 @@ class ApiCodersController
         $newCoder = new Coder($request["name"], $request["subject"]);
         $newCoder->save();
 
-        echo json_encode($newCoder);
+        $this->index();
     }
 
     public function delete($id)
     {
         $coderToDelete = Coder::findById($id);
-
-        $coderDeleted =  [
-            "id" => $coderToDelete->getId(),
-            "name" => $coderToDelete->getName(),
-            "subject" => $coderToDelete->getSubject(),
-            "createat" => $coderToDelete->getCreatedAt()
-        ];
-        
-        echo json_encode($coderDeleted);
-
         $coderToDelete->delete();
+
+        $this->index();
     }
     
     public function edit($id)
     {
         $coderToEdit = Coder::findById($id);
-
-        
-        // new View("EditCoder", ["coder" => $coderToEdit]);
+        new View("EditCoder", ["coder" => $coderToEdit]);
     }
 
     public function update(array $request, $id)
