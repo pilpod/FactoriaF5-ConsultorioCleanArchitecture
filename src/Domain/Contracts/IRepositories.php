@@ -1,0 +1,13 @@
+<?php 
+
+namespace App\Domain\Contracts;
+
+use App\Domain\Models\Coder;
+
+Interface IRepositories {
+
+    public function deleteCoder(Coder $coder);
+
+}
+
+?>

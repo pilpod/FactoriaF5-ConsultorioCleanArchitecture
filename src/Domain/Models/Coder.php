@@ -76,10 +76,10 @@ class Coder
         return $studentList;
     }
 
-    public function deleteById($id)
-    {
-        $query = $this->database->mysql->query("DELETE FROM `students_db` WHERE `students_db`.`id` = {$id}");
-    }
+    // public function deleteById($id)
+    // {
+    //     $query = $this->database->mysql->query("DELETE FROM `students_db` WHERE `students_db`.`id` = {$id}");
+    // }
 
     public function delete()
     {

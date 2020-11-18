@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Domain\Models;
+namespace App\Infrastructure\Files;
 
 class Logger {
 

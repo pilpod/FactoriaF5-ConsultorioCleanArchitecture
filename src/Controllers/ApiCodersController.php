@@ -3,8 +3,10 @@
 namespace App\Controllers;
 
 use App\Domain\Models\Coder;
-use App\Domain\Models\Logger;
+use App\Infrastructure\Files\Logger;
 use App\Domain\Contracts\IWriteInFiles;
+use App\Infrastructure\DB\MysqlRepo;
+use App\Domain\Services\DeleteCoder;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
 class ApiCodersController implements IWriteInFiles
@@ -88,20 +90,18 @@ class ApiCodersController implements IWriteInFiles
 
     public function delete($id)
     {
-        $coderToDelete = Coder::findById($id);
+        $mysqlRepo = new MysqlRepo();
+        $service = new DeleteCoder($mysqlRepo);
+        $coderDeleted = $service->execute($id);
 
-        $coderDeleted =  [
-            "id" => $coderToDelete->getId(),
-            "name" => $coderToDelete->getName(),
-            "subject" => $coderToDelete->getSubject(),
-            "createat" => $coderToDelete->getCreatedAt()
+        $dataCoderDeleted = [
+            "id" => $coderDeleted->getId(),
+            "name" => $coderDeleted->getName(),
+            "subject" => $coderDeleted->getSubject(),
+            "create_at" => $coderDeleted->getCreatedAt(),
         ];
-        
-        echo json_encode($coderDeleted);
 
-        $coderToDelete->delete();
-
-        $this->WriteInLoggerFile('Suprimido el coder con la siguiente id: '.$id);
+        echo json_encode($dataCoderDeleted);
 
     }
     

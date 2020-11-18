@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\Services;
+namespace App\Controllers;
 
 // use App\Core\View;
 use App\Domain\Models\Coder;
