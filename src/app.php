@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Domain\Services\ApiCodersController;
+use App\Controllers\ApiCodersController;
 use App\Domain\Services\CodersController;
 
 

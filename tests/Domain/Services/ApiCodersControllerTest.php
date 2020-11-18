@@ -1,6 +1,6 @@
 <?php 
 
-namespace Tests\Domain\Services\ApiCodersController;
+namespace Tests\Controllers\ApiCodersController;
 
 use PHPUnit\Framework\TestCase;
 use App\Domain\Services\ApiCodersController;
