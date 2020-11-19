@@ -39,9 +39,9 @@ class MysqlRepo implements IRepositories {
         $query = $this->database->mysql->query("DELETE FROM `students_db` WHERE `students_db`.`id` = {$coder->getId()}");
     }
 
-    public function saveCoder()
+    public function saveCoder(Coder $coder)
     {
-        $this->database->mysql->query("INSERT INTO `{$this->table}` (`name`, `subject`) VALUES ('$this->name', '$this->subject');");
+        $this->database->mysql->query("INSERT INTO `{$this->table}` (`name`, `subject`) VALUES ('{$coder->getName()}', '{$coder->getSubject()}');");
     }
 
 }

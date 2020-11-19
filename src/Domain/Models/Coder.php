@@ -57,11 +57,6 @@ class Coder
         $this->subject = $subject;
     }
 
-    public function save(): void
-    {
-        $this->database->mysql->query("INSERT INTO `{$this->table}` (`name`, `subject`) VALUES ('$this->name', '$this->subject');");
-    }
-
     public static function all()
     {
         $database = new Database();
@@ -74,16 +69,6 @@ class Coder
         }
 
         return $studentList;
-    }
-
-    // public function deleteById($id)
-    // {
-    //     $query = $this->database->mysql->query("DELETE FROM `students_db` WHERE `students_db`.`id` = {$id}");
-    // }
-
-    public function delete()
-    {
-        $query = $this->database->mysql->query("DELETE FROM `students_db` WHERE `students_db`.`id` = {$this->id}");
     }
 
     public static function findById($id): Coder

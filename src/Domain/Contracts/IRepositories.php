@@ -8,6 +8,8 @@ Interface IRepositories {
 
     public function deleteCoder(Coder $coder);
 
+    public function saveCoder(Coder $coder);
+
 }
 
 ?>

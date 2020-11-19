@@ -7,6 +7,7 @@ use App\Infrastructure\Files\Logger;
 use App\Domain\Contracts\IWriteInFiles;
 use App\Infrastructure\DB\MysqlRepo;
 use App\Domain\Services\DeleteCoder;
+use App\Domain\Services\SaveCoder;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
 class ApiCodersController implements IWriteInFiles
@@ -70,10 +71,14 @@ class ApiCodersController implements IWriteInFiles
 
     public function store(array $request): void
     {
-        $newCoder = new Coder($request["name"], $request["subject"]);
-        $newCoder->save();
+        $name = $request['name'];
+        $subject = $request['subject'];
 
-        $lastCoder = Coder::findLastCoder();
+        $mysqlRepo = new MysqlRepo();
+        $service = new SaveCoder($mysqlRepo);
+
+        $lastCoder = $service->execute($request);
+
         
         $lastCoder = [
             "id" => $lastCoder->getId(),
@@ -102,6 +107,8 @@ class ApiCodersController implements IWriteInFiles
         ];
 
         echo json_encode($dataCoderDeleted);
+
+        $this->WriteInLoggerFile('El coder con id '.$dataCoderDeleted['id'].' ha sido borrado');
 
     }
     
