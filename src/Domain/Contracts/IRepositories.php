@@ -10,6 +10,8 @@ Interface IRepositories {
 
     public function saveCoder(Coder $coder);
 
+    public function listAllCoders();
+
 }
 
 ?>

@@ -44,6 +44,19 @@ class MysqlRepo implements IRepositories {
         $this->database->mysql->query("INSERT INTO `{$this->table}` (`name`, `subject`) VALUES ('{$coder->getName()}', '{$coder->getSubject()}');");
     }
 
+    public function listAllCoders()
+    {
+        $query = $this->database->mysql->query("select * FROM students_db");
+        $codersArray = $query->fetchAll();
+        $codersList = [];
+
+        foreach ($codersArray as $coder) {
+            $coderItem = new Coder($coder["name"], $coder["subject"], $coder["id"], $coder["created_at"]);
+            array_push($codersList, $coderItem);
+        }
+
+        return $codersList;
+    }
 }
 
 ?>

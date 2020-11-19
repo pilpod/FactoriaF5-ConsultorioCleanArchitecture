@@ -4,6 +4,7 @@ namespace Tests\Domain\Services;
 
 use PHPUnit\Framework\TestCase;
 use Tests\Double\MysqlRepositoryFake;
+use App\Infrastructure\DB\MysqlRepo;
 use App\Domain\Services\ApiCodersController;
 use App\Domain\Contracts\IRepositories;
 use App\Domain\Services\DeleteCoder;

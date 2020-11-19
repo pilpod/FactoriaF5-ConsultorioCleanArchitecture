@@ -8,6 +8,7 @@ use App\Domain\Contracts\IWriteInFiles;
 use App\Infrastructure\DB\MysqlRepo;
 use App\Domain\Services\DeleteCoder;
 use App\Domain\Services\SaveCoder;
+use App\Domain\Services\ListAllCoders;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
 class ApiCodersController implements IWriteInFiles
@@ -47,11 +48,13 @@ class ApiCodersController implements IWriteInFiles
 
     public function index(): void
     {
-        $codersList = Coder::all();
+        $mysqlRepo = new MysqlRepo();
+        $service = new ListAllCoders($mysqlRepo);
+        $listOfCoders = $service->execute();
 
         $coderList = [];
 
-        foreach ($codersList as $coder) {
+        foreach ($listOfCoders as $coder) {
             // print("<pre>".print_r($coder,true)."</pre>");
             $newCoderList = [
                 "id" => $coder->getId(),
@@ -71,14 +74,10 @@ class ApiCodersController implements IWriteInFiles
 
     public function store(array $request): void
     {
-        $name = $request['name'];
-        $subject = $request['subject'];
-
         $mysqlRepo = new MysqlRepo();
         $service = new SaveCoder($mysqlRepo);
 
         $lastCoder = $service->execute($request);
-
         
         $lastCoder = [
             "id" => $lastCoder->getId(),
