@@ -14,7 +14,7 @@ class DeleteCoderTest extends TestCase
 
 	public function test_can_delete_a_coder()
 	{   
-		$id = 19;
+		$id = 52;
 		$repository = new MysqlRepositoryFake();
 		$service = new DeleteCoder($repository);
 		

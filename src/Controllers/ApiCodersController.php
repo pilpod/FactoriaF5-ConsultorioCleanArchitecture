@@ -9,6 +9,8 @@ use App\Infrastructure\DB\MysqlRepo;
 use App\Domain\Services\DeleteCoder;
 use App\Domain\Services\SaveCoder;
 use App\Domain\Services\ListAllCoders;
+use App\Domain\Services\CoderToEdit;
+use App\Domain\Services\UpdateDataCoder;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
 class ApiCodersController implements IWriteInFiles
@@ -113,7 +115,10 @@ class ApiCodersController implements IWriteInFiles
     
     public function edit($id)
     {
-        $coderToEdit = Coder::findById($id);
+        $mysqlRepo = new MysqlRepo();
+        $service = new CoderToEdit($mysqlRepo);
+
+        $coderToEdit = $service->execute($id);
 
         $coderData = [
             "id" => $coderToEdit->getId(),
@@ -128,10 +133,19 @@ class ApiCodersController implements IWriteInFiles
 
     public function update(array $request, $id)
     {
-        $coderToUpdate = Coder::findById($id);
-        $coderToUpdate->rename($request["name"]);
-        $coderToUpdate->editSubject($request["subject"]);
-        $coderToUpdate->update();
+        $mysqlRepo = new MysqlRepo();
+        $service = new UpdateDataCoder($mysqlRepo);
+
+        $coderToUpdate = $service->execute($request, $id);
+
+        $coderUpdated = [
+            "id" => $coderToUpdate->getID(),
+            "name" => $coderToUpdate->getName(),
+            "subject" => $coderToUpdate->getSubject(),
+            "create_at" => $coderToUpdate->getCreatedAt(),
+        ];
+
+        echo json_encode($coderUpdated);
 
         $this->WriteInLoggerFile('El coder '.$id.' ha sido modificado');
 

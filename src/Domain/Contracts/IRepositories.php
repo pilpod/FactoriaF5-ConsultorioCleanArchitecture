@@ -12,6 +12,8 @@ Interface IRepositories {
 
     public function listAllCoders();
 
+    public function updateDataCoder(Coder $coder);
+
 }
 
 ?>

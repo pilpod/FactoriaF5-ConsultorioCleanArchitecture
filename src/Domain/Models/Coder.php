@@ -57,10 +57,7 @@ class Coder
         $this->subject = $subject;
     }
 
-    public function UpdateById($data, $id)
-    {
-        $this->database->mysql->query("UPDATE `students_db` SET `name` = '{$data["name"]}', `subject` = '{$data["subject"]}', WHERE `id` = {$id}"); 
-    }
+    
 
     public function Update()
     {

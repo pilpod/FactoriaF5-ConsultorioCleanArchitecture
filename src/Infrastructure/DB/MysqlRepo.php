@@ -57,6 +57,17 @@ class MysqlRepo implements IRepositories {
 
         return $codersList;
     }
+
+    public function updateDataCoder(Coder $coder)
+    {
+        var_dump($coder->getName());
+        $this->database->mysql->query("
+            UPDATE `students_db` 
+            SET `name` = '{$coder->getName()}', `subject` = '{$coder->getSubject()}' 
+            WHERE `id` = {$coder->getId()}"
+        ); 
+    }
+
 }
 
 ?>
