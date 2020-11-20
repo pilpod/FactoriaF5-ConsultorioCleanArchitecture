@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\Controllers\ApiCodersController;
-use App\Domain\Services\CodersController;
+use App\Controllers\CodersController;
 
-
-$controller = new ApiCodersController();
-// $controller = new CodersController();
+$controller = new CodersController();

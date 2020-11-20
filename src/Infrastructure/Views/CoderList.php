@@ -1,6 +1,6 @@
-<?php require('src/Views/Components/Layout.php'); ?>
+<?php require('src/Infrastructure/Views/Components/Layout.php'); ?>
 
-    <?php require('src/Views/Components/Header.php'); ?>
+    <?php require('src/Infrastructure/Views/Components/Header.php'); ?>
 
     <main class="container">
         <a href="?action=create">

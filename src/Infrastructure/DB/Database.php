@@ -22,7 +22,7 @@ class Database
 
     private function getConnection()
     {
-        $data = file_get_contents("src/Infrastructure/DB/DbConnection.json");
+        $data = file_get_contents("../src/DbConnection.json");
         $data = json_decode($data, true);
 
         $host = $data['myapp']['master']['hosts'];

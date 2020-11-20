@@ -16,35 +16,51 @@ use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 class ApiCodersController implements IWriteInFiles
 {
 
-    public function __construct()
+    public function __construct(string $method, array $content = null, $id = null)
     {
-        // if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "create")) {
-        //     $this->create();
-        //     return;
-        // }
+        var_dump($id);
 
-        if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "store")) {
+        if ($method == "GET") {
+            $this->index();
+        }
+
+        if($method == "POST") {
+            var_dump($content);
+            $this->store($content);
+        }
+
+        if($method == "GET" && $id != null) {
+            $this->edit($id);
+        }
+
+        if($method == "DELETE" && $id != null) {
+            $this->delete($id);
+        }
+
+        if($method == "POST" && $id != null) {
+            $this->update($content, $id);
+        }
+
+        /* if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "store")) {
             $data = $_POST;
             $this->store($_POST);
             return;
-        }
+        } */
 
-        if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "edit")) {
+        /* if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "edit")) {
             $this->edit($_GET["id"]);
             return;
-        }
+        } */
         
-        if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "update")) {
+        /* if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "update")) {
             $this->update($_POST, $_GET["id"]);
             return;
-        }
+        } */
 
-        if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "delete")) {
+        /* if (isset($_GET) && isset($_GET["action"]) && ($_GET["action"] == "delete")) {
             $this->delete($_GET["id"]);
             return;
-        }
-
-        $this->index();
+        } */
        
     }
 

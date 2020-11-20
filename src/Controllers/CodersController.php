@@ -2,8 +2,16 @@
 
 namespace App\Controllers;
 
-// use App\Core\View;
+use App\Core\View;
 use App\Domain\Models\Coder;
+use App\Infrastructure\Files\Logger;
+use App\Domain\Contracts\IWriteInFiles;
+use App\Infrastructure\DB\MysqlRepo;
+use App\Domain\Services\DeleteCoder;
+use App\Domain\Services\SaveCoder;
+use App\Domain\Services\ListAllCoders;
+use App\Domain\Services\CoderToEdit;
+use App\Domain\Services\UpdateDataCoder;
 use phpDocumentor\Reflection\Location; // QUE ES ESTO?
 
 class CodersController
@@ -43,10 +51,12 @@ class CodersController
 
     public function index(): void
     {
-        $codersList = Coder::all();
+        $mysqlRepo = new MysqlRepo();
+        $service = new ListAllCoders($mysqlRepo);
+        $listOfCoders = $service->execute();
 
         new View("CoderList", [
-            "students_db" => $codersList,
+            "students_db" => $listOfCoders,
         ]);
     }
 
@@ -57,32 +67,38 @@ class CodersController
 
     public function store(array $request): void
     {
-        $newCoder = new Coder($request["name"], $request["subject"]);
-        $newCoder->save();
+        $mysqlRepo = new MysqlRepo();
+        $service = new SaveCoder($mysqlRepo);
+
+        $service->execute($request);
 
         $this->index();
     }
 
     public function delete($id)
     {
-        $coderToDelete = Coder::findById($id);
-        $coderToDelete->delete();
+        $mysqlRepo = new MysqlRepo();
+        $service = new DeleteCoder($mysqlRepo);
+        $service->execute($id);
 
         $this->index();
     }
     
     public function edit($id)
     {
-        $coderToEdit = Coder::findById($id);
+        $mysqlRepo = new MysqlRepo();
+        $service = new CoderToEdit($mysqlRepo);
+
+        $coderToEdit = $service->execute($id);
         new View("EditCoder", ["coder" => $coderToEdit]);
     }
 
     public function update(array $request, $id)
     {
-        $coderToUpdate = Coder::findById($id);
-        $coderToUpdate->rename($request["name"]);
-        $coderToUpdate->editSubject($request["subject"]);
-        $coderToUpdate->update();
+        $mysqlRepo = new MysqlRepo();
+        $service = new UpdateDataCoder($mysqlRepo);
+
+        $service->execute($request, $id);
 
         $this->index();
     }
